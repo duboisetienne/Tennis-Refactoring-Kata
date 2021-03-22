@@ -1,3 +1,5 @@
+using System.Collections.Generic;
+
 namespace Tennis
 {
     public class TennisGame2 : ITennisGame
@@ -7,6 +9,7 @@ namespace Tennis
 
         private string _player1Result;
         private string _player2Result;
+
         private string _player1Name;
         private string _player2Name;
 
@@ -14,8 +17,10 @@ namespace Tennis
         {
             _player1Name = player1Name;
             _player2Name = player2Name;
+
             _player1Point = 0;
             _player2Point = 0;
+
             _player1Result = "";
             _player2Result = "";
         }
@@ -107,40 +112,12 @@ namespace Tennis
             return score;
         }
 
-        public void SetP1Score(int number)
-        {
-            for (int i = 0; i < number; i++)
-            {
-                P1Score();
-            }
-        }
-
-        public void SetP2Score(int number)
-        {
-            for (var i = 0; i < number; i++)
-            {
-                P2Score();
-            }
-        }
-
-        private void P1Score()
-        {
-            _player1Point++;
-        }
-
-        private void P2Score()
-        {
-            _player2Point++;
-        }
-
         public void WonPoint(string player)
         {
-            if (player == "player1")
-                P1Score();
-            else
-                P2Score();
-        }
+            if (player == _player1Name) _player1Point++;
 
+            else if (player == _player2Name) _player2Point++;
+        }
     }
 }
 
