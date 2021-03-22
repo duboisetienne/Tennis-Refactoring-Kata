@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 
 namespace Tennis
@@ -13,6 +14,8 @@ namespace Tennis
         private string _player1Name;
         private string _player2Name;
 
+        private readonly Dictionary<int, string>_scoresDictionary;
+
         public TennisGame2(string player1Name, string player2Name)
         {
             _player1Name = player1Name;
@@ -23,11 +26,25 @@ namespace Tennis
 
             _player1Result = "";
             _player2Result = "";
+
+            _scoresDictionary = new Dictionary<int, string>()
+            {
+                {0, "Love" },
+                {1, "Fifteen" },
+                {2, "Thirty" },
+                {3, "Forty" }
+            };
         }
 
         public string GetScore()
         {
             var score = "";
+
+            if (!string.IsNullOrEmpty(IsMatchWon(_player1Point,_player2Point,_player1Name,_player2Name)))
+            {
+                return IsMatchWon(_player1Point, _player2Point, _player1Name, _player2Name);
+            }
+
             if (_player1Point == _player2Point && _player1Point < 3)
             {
                 if (_player1Point == 0)
@@ -110,6 +127,20 @@ namespace Tennis
                 score = "Win for player2";
             }
             return score;
+        }
+
+        private string IsMatchWon(int player1Score, int player2Score,string player1Name,string player2Name)
+        {
+            if (Math.Abs(player1Score-player2Score) >= 2 && player1Score >= 4)
+            {
+                return $"Win for {player1Name}";
+            }
+
+            if (Math.Abs(player2Score - player1Score) >= 2 && player2Score >= 4)
+            {
+                return $"Win for {player2Name}";
+            }
+            return null;
         }
 
         public void WonPoint(string player)
