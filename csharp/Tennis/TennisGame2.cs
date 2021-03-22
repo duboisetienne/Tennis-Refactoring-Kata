@@ -117,26 +117,17 @@ namespace Tennis
             {
                 score = "Advantage player2";
             }
-
-            if (_player1Point >= 4 && _player2Point >= 0 && (_player1Point - _player2Point) >= 2)
-            {
-                score = "Win for player1";
-            }
-            if (_player2Point >= 4 && _player1Point >= 0 && (_player2Point - _player1Point) >= 2)
-            {
-                score = "Win for player2";
-            }
             return score;
         }
 
         private string IsMatchWon(int player1Score, int player2Score,string player1Name,string player2Name)
         {
-            if (Math.Abs(player1Score-player2Score) >= 2 && player1Score >= 4)
+            if (player1Score >= 4 && (player1Score - player2Score) >= 2)
             {
                 return $"Win for {player1Name}";
             }
 
-            if (Math.Abs(player2Score - player1Score) >= 2 && player2Score >= 4)
+            if (player2Score >= 4 && (player2Score - player1Score) >= 2)
             {
                 return $"Win for {player2Name}";
             }
