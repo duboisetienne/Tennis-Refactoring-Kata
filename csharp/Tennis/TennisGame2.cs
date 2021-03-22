@@ -8,11 +8,8 @@ namespace Tennis
         private int _player1Point;
         private int _player2Point;
 
-        private string _player1Result;
-        private string _player2Result;
-
-        private string _player1Name;
-        private string _player2Name;
+        private readonly string _player1Name;
+        private readonly string _player2Name;
 
         private readonly Dictionary<int, string> _scoresDictionary;
 
@@ -23,9 +20,6 @@ namespace Tennis
 
             _player1Point = 0;
             _player2Point = 0;
-
-            _player1Result = "";
-            _player2Result = "";
 
             _scoresDictionary = new Dictionary<int, string>()
             {
@@ -38,8 +32,6 @@ namespace Tennis
 
         public string GetScore()
         {
-            var score = "";
-
             if (!string.IsNullOrEmpty(IsMatchWon(_player1Point,_player2Point,_player1Name,_player2Name)))
             {
                 return IsMatchWon(_player1Point, _player2Point, _player1Name, _player2Name);
@@ -50,70 +42,12 @@ namespace Tennis
                 return IsAdvantage(_player1Point, _player2Point, _player1Name, _player2Name);
             }
 
-            if (_player1Point == _player2Point && _player1Point < 3)
+            if (!string.IsNullOrEmpty(IsEquality(_player1Point, _player2Point)))
             {
-                if (_player1Point == 0)
-                    score = "Love";
-                if (_player1Point == 1)
-                    score = "Fifteen";
-                if (_player1Point == 2)
-                    score = "Thirty";
-                score += "-All";
-            }
-            if (_player1Point == _player2Point && _player1Point > 2)
-                score = "Deuce";
-
-            if (_player1Point > 0 && _player2Point == 0)
-            {
-                if (_player1Point == 1)
-                    _player1Result = "Fifteen";
-                if (_player1Point == 2)
-                    _player1Result = "Thirty";
-                if (_player1Point == 3)
-                    _player1Result = "Forty";
-
-                _player2Result = "Love";
-                score = _player1Result + "-" + _player2Result;
-            }
-            if (_player2Point > 0 && _player1Point == 0)
-            {
-                if (_player2Point == 1)
-                    _player2Result = "Fifteen";
-                if (_player2Point == 2)
-                    _player2Result = "Thirty";
-                if (_player2Point == 3)
-                    _player2Result = "Forty";
-
-                _player1Result = "Love";
-                score = _player1Result + "-" + _player2Result;
+                return IsEquality(_player1Point, _player2Point);
             }
 
-            if (_player1Point > _player2Point && _player1Point < 4)
-            {
-                if (_player1Point == 2)
-                    _player1Result = "Thirty";
-                if (_player1Point == 3)
-                    _player1Result = "Forty";
-                if (_player2Point == 1)
-                    _player2Result = "Fifteen";
-                if (_player2Point == 2)
-                    _player2Result = "Thirty";
-                score = _player1Result + "-" + _player2Result;
-            }
-            if (_player2Point > _player1Point && _player2Point < 4)
-            {
-                if (_player2Point == 2)
-                    _player2Result = "Thirty";
-                if (_player2Point == 3)
-                    _player2Result = "Forty";
-                if (_player1Point == 1)
-                    _player1Result = "Fifteen";
-                if (_player1Point == 2)
-                    _player1Result = "Thirty";
-                score = _player1Result + "-" + _player2Result;
-            }
-
-            return score;
+            return _scoresDictionary[_player1Point] + "-" + _scoresDictionary[_player2Point];
         }
 
         private string IsMatchWon(int player1Score, int player2Score,string player1Name,string player2Name)
@@ -146,7 +80,21 @@ namespace Tennis
             return null;
         }
 
-        
+        private string IsEquality(int player1Score, int player2Score)
+        {
+            if (player1Score == player2Score && player1Score >= 3)
+            {
+                return "Deuce";
+            }
+
+            if (player1Score == player2Score && player1Score < 3)
+            {
+                return _scoresDictionary[player1Score] + "-All";
+            }
+
+            return null;
+        }
+
         public void WonPoint(string player)
         {
             if (player == _player1Name) _player1Point++;
