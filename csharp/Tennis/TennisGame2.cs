@@ -14,7 +14,7 @@ namespace Tennis
         private string _player1Name;
         private string _player2Name;
 
-        private readonly Dictionary<int, string>_scoresDictionary;
+        private readonly Dictionary<int, string> _scoresDictionary;
 
         public TennisGame2(string player1Name, string player2Name)
         {
@@ -43,6 +43,11 @@ namespace Tennis
             if (!string.IsNullOrEmpty(IsMatchWon(_player1Point,_player2Point,_player1Name,_player2Name)))
             {
                 return IsMatchWon(_player1Point, _player2Point, _player1Name, _player2Name);
+            }
+
+            if (!string.IsNullOrEmpty(IsAdvantage(_player1Point, _player2Point, _player1Name, _player2Name)))
+            {
+                return IsAdvantage(_player1Point, _player2Point, _player1Name, _player2Name);
             }
 
             if (_player1Point == _player2Point && _player1Point < 3)
@@ -108,15 +113,6 @@ namespace Tennis
                 score = _player1Result + "-" + _player2Result;
             }
 
-            if (_player1Point > _player2Point && _player2Point >= 3)
-            {
-                score = "Advantage player1";
-            }
-
-            if (_player2Point > _player1Point && _player1Point >= 3)
-            {
-                score = "Advantage player2";
-            }
             return score;
         }
 
@@ -131,9 +127,26 @@ namespace Tennis
             {
                 return $"Win for {player2Name}";
             }
+
             return null;
         }
 
+        private string IsAdvantage(int player1Score, int player2Score, string player1Name, string player2Name)
+        {
+            if (player1Score >= 4 && (player1Score - player2Score) == 1)
+            {
+                return $"Advantage {player1Name}";
+            }
+
+            if (player2Score >= 4 && (player2Score - player1Score) == 1)
+            {
+                return $"Advantage {player2Name}";
+            }
+
+            return null;
+        }
+
+        
         public void WonPoint(string player)
         {
             if (player == _player1Name) _player1Point++;
